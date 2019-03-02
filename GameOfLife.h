@@ -28,11 +28,11 @@ class GameOfLife
 		//void populateArrayOfNeighbors(char character);
 
 	private:
-		Generations *Gen0World;
-		Generations *Gen1World;
+		Generations Gen0World;
+		Generations Gen1World;
 
 
-		myPtr neighborArray(myPtr Gen0World, int rowIndex, int colIndex);
+		myPtr neighborArray(Generations generation, int rowIndex, int colIndex);
 		//Pre-condition: a virtual "world" exists
 		//Post-condition: determine the neighboring cells of the location passed into the function (location being described by rowIndex and colIndex) and populate a char neighborArray with the neighbors
 

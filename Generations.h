@@ -23,6 +23,9 @@ class Generations
 
 		void populateGeneration(int rowIndex, int colIndex, char charToAdd); //randomly populates the world to which myPtr *a belongs
 
+		char getCell(int rowIndex, int colIndex);
+		//returns a reference to the cell at location [rowIndex][colIndex]
+
 
 
 	private:

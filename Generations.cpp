@@ -65,7 +65,10 @@ int Generations::getNumColumnsInGeneration()
 	return numColumns;
 }
 
-
+char Generations::getCell(int rowIndex, int colIndex)
+{
+	return a[rowIndex][colIndex];
+}
 
 
 

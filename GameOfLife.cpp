@@ -56,12 +56,12 @@ void GameOfLife::populateGenZeroFromFile()
 		{
 			if(thisLine[j] == 'X' || thisLine[j] == 'x')
 			{
-				generation1.populateGeneration(i,j,'X');
+				Gen0World.populateGeneration(i,j,'X');
 				//a[i][j] = 'X';
 			}
 			else
 			{
-				generation1.populateGeneration(i,j,'-');
+				Gen0World.populateGeneration(i,j,'-');
 				//a[i][j] = '-';
 			}
 		}
@@ -110,12 +110,13 @@ void GameOfLife::randomizeWorld(int numRows, int numColumns, float popDensity)
 
 			if(randNum % 2 == 0 && cellsFilled <= maxCellsToFill)
 			{
-				a[i][j] = 'X';
+				Gen0World.populateGeneration(i,j,'X');
+				//a[i][j] = 'X';
 				cellsFilled++;
 			}
 			else
 			{
-				a[i][j] = '-';
+				Gen0World.populateGeneration(i,j,'-');
 			}
 		}
 	}
@@ -151,22 +152,126 @@ void GameOfLife::populateNextGeneration(myPtr Gen0World, int numRows, int numCol
 	}
 }
 
-myPtr GameOfLife::neighborArray(myPtr Gen0World, int rowIndex, int colIndex)
+myPtr GameOfLife::neighborArray(Generations generation, int rowIndex, int colIndex)
 {
 	myPtr arrayOfNeighbors = new char[10];
 
-	if((rowIndex == 0) && (colIndex == 0))
+	int numGenerationRows = generation.getNumRowsInGeneration();
+	int numGenerationCols = generation.getNumColumnsInGeneration();
+
+	bool inTopLeftCorner = false;
+	bool inTopRightCorner = false;
+	bool inBottomLeftCorner = false;
+	bool inBottomRightCorner = false;
+	bool inFirstRow = false;
+	bool inLastRow = false;
+	bool inFirstColumn = false;
+	bool inLastColumn = false;
+
+	if(rowIndex == 0 && colIndex == 0)
 	{
-		char neighbor1 = Gen0World[rowIndex][colIndex+1];
+		inTopLeftCorner = true;
+	}
+
+	if((rowIndex == 0) && (colIndex == numGenerationCols - 1))
+	{
+		inTopRightCorner = true;
+	}
+
+	if((rowIndex == numGenerationRows - 1) && (colIndex == 0))
+	{
+		inBottomLeftCorner = true;
+	}
+
+	if((rowIndex == numGenerationRows - 1) && (colIndex == numGenerationCols - 1))
+	{
+		inBottomRightCorner = true;
+	}
+
+	if(rowIndex == 0 && colIndex != 0)
+	{
+		inFirstRow = true;
+	}
+
+	if(rowIndex == numGenerationRows - 1 && colIndex != 0)
+	{
+		inLastRow = true;
+	}
+
+	if(rowIndex != 0 && colIndex == 0)
+	{
+		inFirstColumn = true;
+	}
+
+	if(rowIndex != 0 && colIndex == numGenerationCols - 1)
+	{
+		inLastColumn = true;
+	}
+
+	if(inTopLeftCorner)
+	{
+		char neighbor1 = generation.getCell(rowIndex, colIndex+1);
 		arrayOfNeighbors[0] = neighbor1;
-		char neighbor2 = Gen0World[rowIndex+1][colIndex+1];
+
+		char neighbor2 = generation.getCell(rowIndex+1, colIndex+1);
 		arrayOfNeighbors[1] = neighbor2;
-		char neighbor3 = Gen0World[rowIndex+1][colIndex];
+
+		char neighbor3 = generation.getCell(rowIndex+1, colIndex);
+		arrayOfNeighbors[2] = neighbor3;
+	}
+
+	else if(inTopRightCorner)
+	{
+		char neighbor1 = generation.getCell(rowIndex, colIndex-1);
+		arrayOfNeighbors[0] = neighbor1;
+
+		char neighbor2 = generation.getCell(rowIndex+1, colIndex-1);
+		arrayOfNeighbors[1] = neighbor2;
+
+		char neighbor3 = generation.getCell(rowIndex+1, colIndex);
+		arrayOfNeighbors[2] = neighbor3;
+	}
+
+	else if(inBottomLeftCorner)
+	{
+		char neighbor1 = generation.getCell(rowIndex-1, colIndex);
+		arrayOfNeighbors[0] = neighbor1;
+
+		char neighbor2 = generation.getCell(rowIndex+1, colIndex+1);
+		arrayOfNeighbors[1] = neighbor2;
+
+		char neighbor3 = generation.getCell(rowIndex, colIndex+1);
+		arrayOfNeighbors[2] = neighbor3;
+	}
+
+	else if(inBottomRightCorner)
+	{
+		char neighbor1 = generation.getCell(rowIndex, colIndex-1);
+		arrayOfNeighbors[0] = neighbor1;
+
+		char neighbor2 = generation.getCell(rowIndex-1, colIndex-1);
+		arrayOfNeighbors[1] = neighbor2;
+
+		char neighbor3 = generation.getCell(rowIndex-1, colIndex);
 		arrayOfNeighbors[2] = neighbor3;
 	}
 
 	else if((rowIndex == 0) && (colIndex != 0))
 	{
+		char neighbor1 = generation.getCell(rowIndex, colIndex - 1);
+		arrayOfNeighbors[0] = neighbor1;
 
+		char neighbor2 = generation.getCell(rowIndex, colIndex + 1);
+		arrayOfNeighbors[1] = neighbor1;
+
+		char neighbor3 = generation.getCell(rowIndex + 1, colIndex - 1);
+		arrayOfNeighbors[2] = neighbor3;
+
+		char neighbor4 = generation.getCell(rowIndex + 1, colIndex + 1);
+		arrayOfNeighbors[3] = neighbor4;
+
+		char neighbor5 = generation.getCell(rowIndex + 1, colIndex);
+		arrayOfNeighbors[4] = neighbor5;
 	}
+
 }
