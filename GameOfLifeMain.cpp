@@ -38,6 +38,20 @@ int main(int argc, char **argv)
 		inputStream >> numOfRows >> numOfColumns;
 		*/
 	}
+
+	else
+	{
+		cout << "What are the dimensions of the \"world\"? Type in two integers, the first representing the number of rows and the second representing the number of columns" << endl;
+		int numRows, numColumns;
+
+		cin >> numRows >> numColumns;
+
+		cout << "Type in the population density: " << endl;
+		float popDensity;
+		cin >> popDensity;
+
+		simulation1.randomizeWorld(numRows, numColumns, popDensity);
+	}
 }
 
 
